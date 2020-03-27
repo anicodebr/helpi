@@ -1,0 +1,16 @@
+{
+    "dash": {
+        "route": "/dash",
+        "menu": "Dashboard",
+        "title": "Dashboard"
+    },
+    "analysis":{
+        "route": "/analysis",
+        "menu": "Pending Users",
+        "title": "Pending Users",
+        "user":{
+            "route": "/analysis/user",
+            "title": "User Analysis"
+        }
+    }
+}
