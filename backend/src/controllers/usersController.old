@@ -1,8 +1,5 @@
 const router = require("express").Router();
-const mongoose = require("mongoose");
 const authMiddleware = require("../middleware/authenticate");
-
-const User = mongoose.model("User");
 
 router.post("/registrar", async (req,res) => {
   const { email, name, pass} = req.body;
