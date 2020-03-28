@@ -4,7 +4,7 @@ const cors = require('cors');
 const bodyParser = require("body-parser");
 
 require("./models/users");
-require('dotenv-safe').config(); 
+require('dotenv').config(); 
 
 const app = express();
 

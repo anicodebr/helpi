@@ -1,25 +1,24 @@
 const router = require("express").Router();
 const mongoose = require("mongoose");
-const authMiddleware = require("../middleware/authenticate");
+// const authMiddleware = require("../middleware/authenticate");
 
 const User = mongoose.model("User");
 
 router.post("/registrar", async (req,res) => {
-  const { email } = req.body;
+  const { email, name, pass} = req.body;
 
-  try {
+  if(email && name && pass){
     if (await User.findOne({email})) {
       return res.status(400).json({ error: "User exists" });
     }
-
+    console.log(req.body)
     const user = await User.create(req.body);
-
+    console.log(user)
     return res.json({ user });
-  }catch (err) {
-    console.log(err);
-    return res.status(400);
-    // .json({ error: "User reg fail" });
   }
+  
+  return res.status(401).json({error: "Missing Parameters"});
+
 });
 
 router.post("/authenticar", async (req, res) => {
@@ -47,7 +46,7 @@ router.post("/authenticar", async (req, res) => {
   }
 });
 
-router.use(authMiddleware);
+// router.use(authMiddleware);
 
 router.get("/me", async (req, res) => {
   try {
