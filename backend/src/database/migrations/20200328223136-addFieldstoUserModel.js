@@ -26,9 +26,13 @@ module.exports = {
     /*
       Add reverting commands here.
       Return a promise to correctly handle asynchronicity.
-
       Example:
       return queryInterface.dropTable('users');
     */
+   return Promise.all([
+    queryInterface.removeColumn('Users', 'dt_nasc'),
+    queryInterface.removeColumn('Users', 'cpf'),
+    queryInterface.removeColumn('Users', 'tel')
+   ]);
   }
 };
