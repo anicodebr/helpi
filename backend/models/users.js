@@ -32,7 +32,7 @@ UserSchema.methods = {
   },
 
   generateToker(){
-    return jwt.sign({ id : this.id }, "secret", {
+    return jwt.sign({ foo : 'bar' }, "PROUD2SAVEBUCETINHAS", { algorithm: 'RS256' } ,{
       expiresIn:86400
     });
   }

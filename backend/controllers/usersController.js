@@ -5,7 +5,7 @@ const authMiddleware = require("../middleware/authenticate");
 const User = mongoose.model("User");
 
 router.post("/registrar", async (req,res) => {
-  const { email, username } = req.body;
+  const { email } = req.body;
 
   try {
     if (await User.findOne({email})) {
@@ -16,7 +16,9 @@ router.post("/registrar", async (req,res) => {
 
     return res.json({ user });
   }catch (err) {
-    return res.status(400).json({ error: "User reg fail" });
+    console.log(err);
+    return res.status(400);
+    // .json({ error: "User reg fail" });
   }
 });
 
@@ -32,12 +34,14 @@ router.post("/authenticar", async (req, res) => {
 
     if (!(await user.compareHash(password))) {
       return res.status(400).json({ error: "Pass invalid" });
+    }else{
+      return res.status(200).json({user})
     }
 
-    return res.json({
-      user,
-      token: user.generateToken()
-    });
+    // return res.json({
+    //   user,
+    //   token: user.generateToken()
+    // });
   } catch (err) {
     return res.status(400).json({ error: "User auth fail" });
   }

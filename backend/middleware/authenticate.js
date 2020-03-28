@@ -8,12 +8,13 @@ module.exports = async (req,res,next) => {
     return res.status(401).send({ error: "No token" });
   }
 
-  const [scheme, token] =authHeader.split(" ");
+  const [scheme, token] = authHeader.split(" ");
 
   try {
     const decoded = await promisify(jwt.verify) (token, "secret");
 
-    req.userId = decoded.id;
+    console.log(decoded)
+    // req.userId = decoded.id;
     
     return next();
   }catch (err) {
