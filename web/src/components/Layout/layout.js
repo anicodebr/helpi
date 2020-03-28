@@ -11,7 +11,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import { ListItemIcon, ListItemText, ListItem } from "@material-ui/core";
+import { ListItemIcon, ListItemText, ListItem, Menu, Button, MenuItem, Fade, Box } from "@material-ui/core";
 
 import { history } from '../../redux/_helpers';
 import * as routes from "../../utils/routes.json";
@@ -78,14 +78,15 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'flex-end',
     padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
-    // ...theme.mixins.toolbar,
+    ...theme.mixins.toolbar,
   },
   content: {
     flexGrow: 1,
   },
   toolbarReset:{
     minHeight: toolbarHeight,
-    paddingLeft: theme.spacing(0)
+    paddingLeft: theme.spacing(0),
+    paddingRight: theme.spacing(0)
   },
   toolbarHead:{
       height: toolbarHeight
@@ -95,8 +96,47 @@ const useStyles = makeStyles(theme => ({
   },
   list:{
       paddingTop: 0
+  },
+  children:{
+    padding: theme.spacing(1)
   }
 }));
+
+function SimpleMenu({ handleRedirect, toggleDrawer, ...props }) {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick = event => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  return (
+    <>
+      <Button aria-controls="fade-menu" aria-haspopup="true" onClick={handleClick}>
+        <i style={{ fontSize: '32px' }} class="material-icons">
+          account_box
+        </i>
+      </Button>
+      <Menu
+        id="fade-menu"
+        style={{ marginTop: '2em' }}
+        anchorEl={anchorEl}
+        keepMounted
+        open={open}
+        onClose={handleClose}
+        TransitionComponent={Fade}
+      >
+        <MenuItem onClick={handleClose}>Perfil</MenuItem>
+        {/* <MenuItem onClick={toggleDrawer('right', true)}>Preferencias</MenuItem> */}
+        <MenuItem onClick={() => handleRedirect('/')}>Deslogar</MenuItem>
+      </Menu>
+    </>
+  )
+}
 
 export default function MiniDrawer({...props}) {
   const classes = useStyles();
@@ -124,19 +164,28 @@ export default function MiniDrawer({...props}) {
         })}
       >
         <Toolbar className={classes.toolbarReset}>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            className={clsx(classes.menuButton, {
-              [classes.hide]: open,
-            })}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography className={classes.titleH} variant="h6" noWrap>
-            {props.title}
-          </Typography>
+          <Box style={{width: "100%"}} display="flex" alignItems="center">
+            <Box>
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                onClick={handleDrawerOpen}
+                className={clsx(classes.menuButton, {
+                  [classes.hide]: open,
+                })}
+              >
+                <MenuIcon />
+              </IconButton>
+            </Box>
+            <Box flexGrow={1}>
+              <Typography className={classes.titleH} variant="h6" noWrap>
+                {props.title}
+              </Typography>
+            </Box>
+            <Box>
+              <SimpleMenu handleRedirect={handleRedirect} />
+            </Box>
+          </Box>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -181,7 +230,9 @@ export default function MiniDrawer({...props}) {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbarHead} />
-        {props.children}
+        <div className={classes.children}>
+          {props.children}
+        </div>
       </main>
     </div>
   );
