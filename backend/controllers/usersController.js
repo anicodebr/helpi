@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const mongoose = require("mongoose");
-// const authMiddleware = require("../middleware/authenticate");
+const authMiddleware = require("../middleware/authenticate");
 
 const User = mongoose.model("User");
 
@@ -11,42 +11,41 @@ router.post("/registrar", async (req,res) => {
     if (await User.findOne({email})) {
       return res.status(400).json({ error: "User exists" });
     }
-    console.log(req.body)
-    const user = await User.create(req.body);
-    console.log(user)
-    return res.json({ user });
+    await User.create(req.body);
+    return res.status(200).json({msg: "Success!"});
   }
   
-  return res.status(401).json({error: "Missing Parameters"});
-
+  return res.status(400).json(null);
 });
 
-router.post("/authenticar", async (req, res) => {
-  try {
-    const { email, password } = req.body;
+router.post("/auth", async (req, res) => {
+  const { email, pass } = req.body;
 
-    const user = await User.findOne({ email });
+  const user = await User.findOne({ email });
 
-    if (!user) {
-      return res.status(400).json({ error: "User not found" });
-    }
-
-    if (!(await user.compareHash(password))) {
-      return res.status(400).json({ error: "Pass invalid" });
-    }else{
-      return res.status(200).json({user})
-    }
-
-    // return res.json({
-    //   user,
-    //   token: user.generateToken()
-    // });
-  } catch (err) {
-    return res.status(400).json({ error: "User auth fail" });
+  if (!user) {
+    return res.status(404).json(null);
   }
+
+  if (!(await user.compareHash(pass))) {
+    return res.status(401).json({ error: "Pass invalid" });
+  }else{
+    let token = user.generateToken(user._id);
+    return res.status(200).json({
+      id: user._id,
+      email: user.email,
+      token: token 
+    })
+  }
+
+  // return res.json({
+  //   user,
+  //   token: user.generateToken()
+  // });
+
 });
 
-// router.use(authMiddleware);
+router.use(authMiddleware);
 
 router.get("/me", async (req, res) => {
   try {

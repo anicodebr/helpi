@@ -1,6 +1,6 @@
-// const jwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 const mongoose = require('mongoose');
-// const bcrypt = require("bcryptjs");
+const bcrypt = require("bcryptjs");
 
 const UserSchema = new mongoose.Schema({
   name: {
@@ -38,27 +38,27 @@ const UserSchema = new mongoose.Schema({
     type: String,
   },
 
-  password: {
+  pass: {
     type:String
   }
 });
 
-// UserSchema.pre("save", async function hashPassword(next){
-//   if(!this.isModified("password")) next();
+UserSchema.pre("save", async function hashPassword(next){
+  if(!this.isModified("pass")) next();
 
-//   this.password = await bcrypt.hash(this.password,8);
-// });
+  this.pass = await bcrypt.hash(this.pass,8);
+});
 
-// UserSchema.methods = {
-//   compareHash(hash) {
-//     return bcrypt.compare(hash, this.password);
-//   },
+UserSchema.methods = {
+  compareHash(hash) {
+    return bcrypt.compare(hash, this.pass);
+  },
 
-  // generateToker(){
-  //   return jwt.sign({ foo : 'bar' }, "PROUD2SAVEBUCETINHAS", { algorithm: 'RS256' } ,{
-  //     expiresIn:86400
-  //   });
-  // }
-// }
+  generateToken(id){
+    return jwt.sign({ id: id }, process.env.SECRET,{
+      expiresIn:86400
+    });
+  }
+}
 
 mongoose.model("User",UserSchema);
