@@ -26,10 +26,20 @@ module.exports = {
         })
     },
     async index(req,res){
-        
+        User.findAll({ attributes: ['name', 'email', 'id', 'createdAt']})
+        .then(users => {
+            users?
+            res.status(200).json(users):
+            res.status(404).json(null)
+        })
     },
     async show(req,res){
-        
+        User.findByPk(req.params.id, { attributes: ['name', 'email', 'id', 'createdAt']})
+        .then(user => {
+            user?
+            res.status(200).json(user):
+            res.status(404).json(null)
+        })
     },
     async store(req,res){
         let password = await bcrypt.hash(req.body.password,10);
@@ -44,9 +54,22 @@ module.exports = {
         })
     },
     async update(req,res){
-
+        User.findOne({where: {id: req.params.id}}, { attributes: ['name', 'email', 'password']})
+        .then(async user => {
+            user.name       = req.body.name                             || user.name;
+            user.email      = req.body.email                            || user.email;
+            user.password   = req.body.password? await bcrypt.hash(req.body.password,10):user.password
+            await user.save().then(user => user?
+                res.status(200).json(null):
+                res.status(401).json(null))
+        })
     },
     async destroy(req,res){
-
+        User.destroy({where: {id: req.params.id }})
+        .then(user => {
+            user?
+            res.status(200).json(null):
+            res.status(401).json(null)
+        })
     },
 }
