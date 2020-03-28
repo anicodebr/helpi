@@ -1,23 +1,15 @@
 const jwt = require("jsonwebtoken");
-const { promisify } = require("util");
 
 module.exports = async (req,res,next) => {
-  const authHeader = req.headers.authorization;
+    const token = req.headers.authorization;
 
-  if (!authHeader) {
-    return res.status(401).send({ error: "No token" });
-  }
+    if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
 
-  const [scheme, token] = authHeader.split(" ");
+    jwt.verify(token, process.env.SECRET, (err, decoded) => {
+        if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
 
-  try {
-    const decoded = await promisify(jwt.verify) (token, "secret");
-
-    console.log(decoded)
-    req.userId = decoded.id;
-    
-    return next();
-  }catch (err) {
-    return res.status(401).send({ error : "Invalid token" });
-  }
+        // se tudo estiver ok, salva no request para uso posterior
+        req.userId = decoded.id;
+        next();
+    });
 };
