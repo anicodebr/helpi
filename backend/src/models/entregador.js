@@ -7,6 +7,9 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.INTEGER
     },
+    autorizado: {
+      type: DataTypes.BOOLEAN
+    },
     rg_frente: {
       type: DataTypes.BLOB
     },
