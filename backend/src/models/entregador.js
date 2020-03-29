@@ -7,7 +7,10 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.INTEGER
     },
-    foto: {
+    rg_frente: {
+      type: DataTypes.BLOB
+    },
+    rg_tras: {
       type: DataTypes.BLOB
     },
     descricao: {
