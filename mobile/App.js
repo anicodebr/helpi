@@ -1,8 +1,11 @@
 import React from 'react';
 import Routes from './src/routes'
+import {ThemeContext, defaultTheme} from './src/theme';
 
 export default function App() {
   return (
-    <Routes />
+    <ThemeContext.Provider value={defaultTheme.light}>
+      <Routes />
+    </ThemeContext.Provider>
   );
 }
