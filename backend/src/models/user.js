@@ -43,8 +43,8 @@ module.exports = (sequelize, DataTypes) => {
 
     User.associate = function(models) {
       // associations can be defined here
-      User.belongsTo(models.Entregador)
-      User.belongsTo(models.Cliente)
+      User.belongsTo(models.Entregador, {onDelete: 'RESTRICT'})
+      User.belongsTo(models.Cliente, {onDelete: 'RESTRICT'})
     };
   
   return User;
