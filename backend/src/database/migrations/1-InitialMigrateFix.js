@@ -7,17 +7,18 @@ var Sequelize = require('sequelize');
  *
  * createTable "Enderecos", deps: []
  * createTable "Entregadors", deps: []
- * createTable "Feedbacks", deps: []
  * createTable "Clientes", deps: [Enderecos]
+ * createTable "Users", deps: [Entregadors, Clientes]
+ * createTable "Acessos", deps: [Users]
+ * createTable "Feedbacks", deps: [Users]
  * createTable "Pedidos", deps: [Enderecos, Feedbacks, Entregadors, Clientes]
- * createTable "Users", deps: [Entregadors, Clientes, Feedbacks]
  *
  **/
 
 var info = {
     "revision": 1,
-    "name": "InitialMigration",
-    "created": "2020-03-29T02:09:54.226Z",
+    "name": "InitialMigrateFix",
+    "created": "2020-03-29T07:58:31.210Z",
     "comment": ""
 };
 
@@ -140,36 +141,6 @@ var migrationCommands = [{
     {
         fn: "createTable",
         params: [
-            "Feedbacks",
-            {
-                "id": {
-                    "type": Sequelize.INTEGER,
-                    "field": "id",
-                    "primaryKey": true,
-                    "autoIncrement": true,
-                    "allowNull": false
-                },
-                "text": {
-                    "type": Sequelize.TEXT,
-                    "field": "text"
-                },
-                "createdAt": {
-                    "type": Sequelize.DATE,
-                    "field": "createdAt",
-                    "allowNull": false
-                },
-                "updatedAt": {
-                    "type": Sequelize.DATE,
-                    "field": "updatedAt",
-                    "allowNull": false
-                }
-            },
-            {}
-        ]
-    },
-    {
-        fn: "createTable",
-        params: [
             "Clientes",
             {
                 "id": {
@@ -200,6 +171,168 @@ var migrationCommands = [{
                     "onDelete": "RESTRICT",
                     "references": {
                         "model": "Enderecos",
+                        "key": "id"
+                    },
+                    "allowNull": true
+                }
+            },
+            {}
+        ]
+    },
+    {
+        fn: "createTable",
+        params: [
+            "Users",
+            {
+                "id": {
+                    "type": Sequelize.INTEGER,
+                    "field": "id",
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "allowNull": false
+                },
+                "name": {
+                    "type": Sequelize.STRING,
+                    "field": "name",
+                    "allowNull": false
+                },
+                "email": {
+                    "type": Sequelize.STRING,
+                    "field": "email",
+                    "unique": true,
+                    "allowNull": false
+                },
+                "password": {
+                    "type": Sequelize.STRING,
+                    "field": "password",
+                    "allowNull": false
+                },
+                "dt_nasc": {
+                    "type": Sequelize.DATEONLY,
+                    "field": "dt_nasc",
+                    "allowNull": false
+                },
+                "cpf": {
+                    "type": Sequelize.STRING,
+                    "field": "cpf",
+                    "allowNull": false
+                },
+                "tel": {
+                    "type": Sequelize.STRING,
+                    "field": "tel",
+                    "allowNull": false
+                },
+                "foto": {
+                    "type": Sequelize.BLOB,
+                    "field": "foto",
+                    "allowNull": false
+                },
+                "createdAt": {
+                    "type": Sequelize.DATE,
+                    "field": "createdAt",
+                    "allowNull": false
+                },
+                "updatedAt": {
+                    "type": Sequelize.DATE,
+                    "field": "updatedAt",
+                    "allowNull": false
+                },
+                "EntregadorId": {
+                    "type": Sequelize.INTEGER,
+                    "field": "EntregadorId",
+                    "onUpdate": "CASCADE",
+                    "onDelete": "RESTRICT",
+                    "references": {
+                        "model": "Entregadors",
+                        "key": "id"
+                    },
+                    "allowNull": true
+                },
+                "ClienteId": {
+                    "type": Sequelize.INTEGER,
+                    "field": "ClienteId",
+                    "onUpdate": "CASCADE",
+                    "onDelete": "RESTRICT",
+                    "references": {
+                        "model": "Clientes",
+                        "key": "id"
+                    },
+                    "allowNull": true
+                }
+            },
+            {}
+        ]
+    },
+    {
+        fn: "createTable",
+        params: [
+            "Acessos",
+            {
+                "id": {
+                    "type": Sequelize.INTEGER,
+                    "field": "id",
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "allowNull": false
+                },
+                "createdAt": {
+                    "type": Sequelize.DATE,
+                    "field": "createdAt",
+                    "allowNull": false
+                },
+                "updatedAt": {
+                    "type": Sequelize.DATE,
+                    "field": "updatedAt",
+                    "allowNull": false
+                },
+                "UserId": {
+                    "type": Sequelize.INTEGER,
+                    "field": "UserId",
+                    "onUpdate": "CASCADE",
+                    "onDelete": "SET NULL",
+                    "references": {
+                        "model": "Users",
+                        "key": "id"
+                    },
+                    "allowNull": true
+                }
+            },
+            {}
+        ]
+    },
+    {
+        fn: "createTable",
+        params: [
+            "Feedbacks",
+            {
+                "id": {
+                    "type": Sequelize.INTEGER,
+                    "field": "id",
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "allowNull": false
+                },
+                "text": {
+                    "type": Sequelize.TEXT,
+                    "field": "text"
+                },
+                "createdAt": {
+                    "type": Sequelize.DATE,
+                    "field": "createdAt",
+                    "allowNull": false
+                },
+                "updatedAt": {
+                    "type": Sequelize.DATE,
+                    "field": "updatedAt",
+                    "allowNull": false
+                },
+                "UserId": {
+                    "type": Sequelize.INTEGER,
+                    "field": "UserId",
+                    "onUpdate": "CASCADE",
+                    "onDelete": "RESTRICT",
+                    "references": {
+                        "model": "Users",
                         "key": "id"
                     },
                     "allowNull": true
@@ -295,101 +428,6 @@ var migrationCommands = [{
                     "onDelete": "RESTRICT",
                     "references": {
                         "model": "Clientes",
-                        "key": "id"
-                    },
-                    "allowNull": true
-                }
-            },
-            {}
-        ]
-    },
-    {
-        fn: "createTable",
-        params: [
-            "Users",
-            {
-                "id": {
-                    "type": Sequelize.INTEGER,
-                    "field": "id",
-                    "primaryKey": true,
-                    "autoIncrement": true,
-                    "allowNull": false
-                },
-                "name": {
-                    "type": Sequelize.STRING,
-                    "field": "name",
-                    "allowNull": false
-                },
-                "email": {
-                    "type": Sequelize.STRING,
-                    "field": "email",
-                    "unique": true,
-                    "allowNull": false
-                },
-                "password": {
-                    "type": Sequelize.STRING,
-                    "field": "password",
-                    "allowNull": false
-                },
-                "dt_nasc": {
-                    "type": Sequelize.DATEONLY,
-                    "field": "dt_nasc",
-                    "allowNull": false
-                },
-                "cpf": {
-                    "type": Sequelize.STRING,
-                    "field": "cpf",
-                    "allowNull": false
-                },
-                "tel": {
-                    "type": Sequelize.STRING,
-                    "field": "tel",
-                    "allowNull": false
-                },
-                "foto": {
-                    "type": Sequelize.BLOB,
-                    "field": "foto",
-                    "allowNull": false
-                },
-                "createdAt": {
-                    "type": Sequelize.DATE,
-                    "field": "createdAt",
-                    "allowNull": false
-                },
-                "updatedAt": {
-                    "type": Sequelize.DATE,
-                    "field": "updatedAt",
-                    "allowNull": false
-                },
-                "EntregadorId": {
-                    "type": Sequelize.INTEGER,
-                    "field": "EntregadorId",
-                    "onUpdate": "CASCADE",
-                    "onDelete": "RESTRICT",
-                    "references": {
-                        "model": "Entregadors",
-                        "key": "id"
-                    },
-                    "allowNull": true
-                },
-                "ClienteId": {
-                    "type": Sequelize.INTEGER,
-                    "field": "ClienteId",
-                    "onUpdate": "CASCADE",
-                    "onDelete": "RESTRICT",
-                    "references": {
-                        "model": "Clientes",
-                        "key": "id"
-                    },
-                    "allowNull": true
-                },
-                "FeedbackId": {
-                    "type": Sequelize.INTEGER,
-                    "field": "FeedbackId",
-                    "onUpdate": "CASCADE",
-                    "onDelete": "RESTRICT",
-                    "references": {
-                        "model": "Feedbacks",
                         "key": "id"
                     },
                     "allowNull": true
