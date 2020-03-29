@@ -1,10 +1,32 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Entregador = sequelize.define('Entregador', {
-    foto: DataTypes.BLOB,
-    descricao: DataTypes.TEXT,
-    raio: DataTypes.FLOAT,
-    itemlimit: DataTypes.INTEGER
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER
+    },
+    foto: {
+      type: DataTypes.BLOB
+    },
+    descricao: {
+      type: DataTypes.TEXT
+    },
+    raio: {
+      type: DataTypes.FLOAT
+    },
+    itemlimit: {
+      type: DataTypes.INTEGER
+    },
+    createdAt: {
+      allowNull: false,
+      type: DataTypes.DATE
+    },
+    updatedAt: {
+      allowNull: false,
+      type: DataTypes.DATE
+    }
   }, {});
   Entregador.associate = function(models) {
     // associations can be defined here

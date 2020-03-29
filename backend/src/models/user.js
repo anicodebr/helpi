@@ -1,17 +1,50 @@
 module.exports = (sequelize, DataTypes) => {
     const User = sequelize.define('User', {
-      name: DataTypes.STRING,
-      email: DataTypes.STRING,
-      password: DataTypes.STRING,
-      dt_nasc: DataTypes.DATEONLY,
-      cpf: DataTypes.STRING,
-      tel: DataTypes.STRING
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: DataTypes.INTEGER,
+      },
+      name: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      email: {
+        allowNull: false,
+        type: DataTypes.STRING,
+        unique: true,
+      },
+      password: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      createdAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+      },
+      updatedAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+      },
+      dt_nasc: {
+        allowNull: false,
+        type: DataTypes.DATEONLY,
+      },
+      cpf: {
+        allowNull: false,
+        type: DataTypes.STRING
+      },
+      tel: {
+        allowNull: false,
+        type: DataTypes.STRING
+      }
     });
 
-    Entregador.associate = function(models) {
+    User.associate = function(models) {
       // associations can be defined here
-      User.hasOne(models.Entregador);
-      User.hasOne(models.Cliente);
+      User.belongsTo(models.Entregador)
+      User.belongsTo(models.Cliente)
     };
   
   return User;
