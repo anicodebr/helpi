@@ -3,3 +3,4 @@ node_modules/
 .lock
 yarn.lock
 _current.json
+_current_bak.json
