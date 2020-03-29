@@ -34,7 +34,7 @@ module.exports = {
         })
     },
     async show(req,res){
-        User.findByPk(req.params.id, { attributes: ['name', 'email', 'id', 'createdAt']})
+        User.findByPk(req.params.id, { attributes: [ 'id', 'name', 'email', "dt_nasc", "cpf", "tel", 'createdAt']})
         .then(user => {
             user?
             res.status(200).json(user):
@@ -43,7 +43,9 @@ module.exports = {
     },
     async store(req,res){
         let password = await bcrypt.hash(req.body.password,10);
-        User.findOrCreate({where: {email: req.body.email}, defaults: {password: password, name: req.body.name}})
+        User.findOrCreate({where: {email: req.body.email}, defaults: {
+            password: password, name: req.body.name, dt_nasc: req.body.dt_nasc, cpf: req.body.cpf, tel: req.body.tel
+        }})
         .then(([user, created]) => {
             console.log(user.get({
                 plain: true
@@ -54,10 +56,13 @@ module.exports = {
         })
     },
     async update(req,res){
-        User.findOne({where: {id: req.params.id}}, { attributes: ['name', 'email', 'password']})
+        User.findOne({where: {id: req.params.id}}, { attributes: ['name', 'email', 'password', 'dt_nasc', 'cpf', 'tel']})
         .then(async user => {
             user.name       = req.body.name                             || user.name;
             user.email      = req.body.email                            || user.email;
+            user.dt_nasc    = req.body.dt_nasc                          || user.dt_nasc;
+            user.cpf        = req.body.cpf                              || user.cpf;
+            user.tel        = req.body.tel                              || user.tel;
             user.password   = req.body.password? await bcrypt.hash(req.body.password,10):user.password
             await user.save().then(user => user?
                 res.status(200).json(null):
