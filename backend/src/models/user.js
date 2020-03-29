@@ -19,14 +19,6 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.STRING,
       },
-      createdAt: {
-        allowNull: false,
-        type: DataTypes.DATE,
-      },
-      updatedAt: {
-        allowNull: false,
-        type: DataTypes.DATE,
-      },
       dt_nasc: {
         allowNull: false,
         type: DataTypes.DATEONLY,
@@ -38,7 +30,19 @@ module.exports = (sequelize, DataTypes) => {
       tel: {
         allowNull: false,
         type: DataTypes.STRING
-      }
+      },
+      foto: {
+        allowNull: false,
+        type: DataTypes.BLOB
+      },
+      createdAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+      },
+      updatedAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+      },
     });
 
     User.associate = function(models) {
