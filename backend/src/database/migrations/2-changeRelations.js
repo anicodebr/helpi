@@ -5,28 +5,41 @@ var Sequelize = require('sequelize');
 /**
  * Actions summary:
  *
- * addColumn "autorizado" to table "Entregadors"
+ * removeColumn "FeedbackId" from table "Users"
+ * addColumn "UserId" to table "Feedbacks"
  *
  **/
 
 var info = {
-    "revision": 3,
-    "name": "addautorizadotoentregador",
-    "created": "2020-03-29T01:23:24.287Z",
+    "revision": 2,
+    "name": "changeRelations",
+    "created": "2020-03-29T02:12:13.124Z",
     "comment": ""
 };
 
 var migrationCommands = [{
-    fn: "addColumn",
-    params: [
-        "Entregadors",
-        "autorizado",
-        {
-            "type": Sequelize.BOOLEAN,
-            "field": "autorizado"
-        }
-    ]
-}];
+        fn: "removeColumn",
+        params: ["Users", "FeedbackId"]
+    },
+    {
+        fn: "addColumn",
+        params: [
+            "Feedbacks",
+            "UserId",
+            {
+                "type": Sequelize.INTEGER,
+                "field": "UserId",
+                "onUpdate": "CASCADE",
+                "onDelete": "RESTRICT",
+                "references": {
+                    "model": "Users",
+                    "key": "id"
+                },
+                "allowNull": true
+            }
+        ]
+    }
+];
 
 module.exports = {
     pos: 0,

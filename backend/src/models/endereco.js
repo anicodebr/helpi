@@ -34,6 +34,9 @@ module.exports = (sequelize, DataTypes) => {
     pais: {
       type: DataTypes.STRING
     },
+    ativo: {
+      type: DataTypes.BOOLEAN
+    },
     createdAt: {
       allowNull: false,
       type: DataTypes.DATE
@@ -47,6 +50,7 @@ module.exports = (sequelize, DataTypes) => {
   Endereco.associate = function(models) {
     // associations can be defined here
     Endereco.hasMany(models.Cliente, {onDelete: 'RESTRICT'});
+    Endereco.hasMany(models.Pedido,  {onDelete: 'RESTRICT'});
   };
   return Endereco;
 };
