@@ -1,10 +1,10 @@
-const { User, Entregador, Cliente, Endereco } = require('../models');
+const { User, Entregador, Cliente, Endereco, Acessos } = require('../models');
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const generateToken = async (id) => {
     return jwt.sign({ id: id }, process.env.SECRET,{
-        expiresIn:86400
+        expiresIn: '1h' //FUNCIONA COM SEGUNDOS ESSA MERDA EU FIQUEI 1 HORA TENTANDO ENTENDER ESSA BUCETA PAU NO MEU CU
     });
 }
 
@@ -16,17 +16,28 @@ module.exports = {
     async auth(req,res){
         User.findOne({where:{email: req.body.email}})
         .then(async user => {
-            await compareHash(req.body.password, user.dataValues.password)?
-            res.status(200).json({
-                id: user.dataValues.id,
-                name: user.dataValues.name,
-                token: await generateToken(user.dataValues.id)
-            }):
-            res.status(401).json(null)
+            switch (user) {
+                case null:
+                    res.status(401).json(null)
+                    break;
+                default:
+                    let _user = user.get({plain: true})
+                    await Acessos.create({ UserId: _user.id })
+                    await compareHash(req.body.password, user.dataValues.password)
+                    res.status(200).json({
+                        id: user.dataValues.id,
+                        name: user.dataValues.name,
+                        token: await generateToken(user.dataValues.id)
+                    })
+                    break;
+            }
         })
     },
     async index(req,res){
-        User.findAll({ attributes: ['name', 'email', 'id', 'createdAt']})
+        User.findAll({ 
+            attributes: [ 'id', 'name', 'email', "dt_nasc", "cpf", "tel", 'foto','createdAt'],
+            include: [Entregador, Cliente]
+        })
         .then(users => {
             users?
             res.status(200).json(users):
@@ -107,11 +118,33 @@ module.exports = {
         })
     },
     async destroy(req,res){
-        User.destroy({where: {id: req.params.id }})
+        User.findByPk(req.params.id)
         .then(user => {
-            user?
-            res.status(200).json(null):
-            res.status(401).json(null)
+            user.destroy();
+            let _user = user.get({plain: true});
+            switch (_user.comprador) {
+                case !null:
+                    Cliente.findByPk(_user.ClienteId)
+                    .then(cliente => {
+                        cliente.destroy();
+                        let _cliente = cliente.get({plain: true})
+                        Endereco.findByPk(_cliente.EnderecoId)
+                        .then(endereco => {
+                            endereco.destroy()
+                            res.status(200).json(null)
+                        })
+                    })
+                    break;
+                default:
+                    Entregador.findByPk(_user.EntregadorId)
+                    .then(entregador => {
+                        entregador.destroy()
+                        res.status(200).json(null)
+                    })
+                    break;
+            }
+        }).catch(err => {
+            res.status(404).json(null)
         })
     },
 }
