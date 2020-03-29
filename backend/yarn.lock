@@ -1665,10 +1665,10 @@ seq-queue@^0.0.5:
   resolved "https://registry.yarnpkg.com/seq-queue/-/seq-queue-0.0.5.tgz#d56812e1c017a6e4e7c3e3a37a1da6d78dd3c93e"
   integrity sha1-1WgS4cAXpuTnw+Ojeh2m143TyT4=
 
-sequelize-auto-migrations-up2date@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/sequelize-auto-migrations-up2date/-/sequelize-auto-migrations-up2date-1.0.4.tgz#739adcf4e88cbee32edce65dfa350fae46471dfd"
-  integrity sha512-IbEenjmXSiB5d+hZ9gt7BkAXoNA3vgOCblzX03PoQdET71pPe9eC932L7ceqWKoz+vg9M+EnruvWpmhrEPu4CQ==
+sequelize-auto-migrations-up2date@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/sequelize-auto-migrations-up2date/-/sequelize-auto-migrations-up2date-1.0.6.tgz#b25410102d4789e9e5be79f5ed1a9dd073df5548"
+  integrity sha512-WhQthGckW4MBflKiI855POK6+95leNL3MRGYq6mCbnId7i7YARQ9h8lncIgb4CQE4jWCD7amFCIHSrgVM2EuPQ==
   dependencies:
     async "^2.5.1"
     command-line-args "^5.0.2"
