@@ -83,7 +83,7 @@ module.exports = {
                     return res.status(200).json(null);                                                              //Retorna 'ok'
                 }
                 if(user)                                                                                            // Caso o usuário já exista, consequentemente não foi criado um novo:
-                    return res.status(401).json(null);                                                              //Retorna não autorizado
+                    return res.status(409).json(null);                                                              //Retorna não autorizado
             }).catch(err => { console.error(err); res.status(500).json(null); })                                    //Catch para dar console no error e retornar um status de erro no servidor sem vazar dados
         }).catch(err => { console.error(err); res.status(500).json(null); })                                        //Catch para dar console no error e retornar um status de erro no servidor sem vazar dados
     },
@@ -131,8 +131,7 @@ module.exports = {
             }
         }).catch(err => { console.error(err); return res.status(500).json(null); })                                 //Catch para dar console no error e retornar um status de erro no servidor sem vazar dados
     },
-    async update(req,res){                                                                                          // Rota para update no usuário dono de respectivo <id>, apenas atualiza o que for enviado. 
-                                                                                                                    // Ainda não se encontra atualizado mas deve ser feito em base ao código do destroy() de verificar existencia e autorizar mudanças.
+    async update(req,res){                                                                                          // Rota para update no usuário dono de respectivo <id>, apenas atualiza o que for enviado. Ainda não se encontra atualizado mas deve ser feito em base ao código do destroy() de verificar existencia e autorizar mudanças.
         User.findOne({where: {id: req.params.id}}, { attributes: ['name', 'email', 'password', 'dt_nasc', 'cpf', 'tel']})
         .then(async user => {
             user.name       = req.body.name                             || user.name;
