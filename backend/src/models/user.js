@@ -20,19 +20,19 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
       },
       dt_nasc: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.DATEONLY,
       },
       cpf: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING
       },
       tel: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING
       },
       foto: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.BLOB
       },
       createdAt: {
@@ -49,6 +49,7 @@ module.exports = (sequelize, DataTypes) => {
       // associations can be defined here
       User.belongsTo(models.Entregador, {onDelete: 'RESTRICT'})
       User.belongsTo(models.Cliente, {onDelete: 'RESTRICT'})
+      User.belongsTo(models.Admin, {onDelete: 'RESTRICT'})
     };
   
   return User;

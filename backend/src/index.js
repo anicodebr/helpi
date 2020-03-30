@@ -11,6 +11,7 @@ app.use(cors());
 
 //Rotas do sistema
 app.use("/api", require("./routes/user"))
+app.use("/api/report", require("./routes/report"))
 
 app.listen(process.env.PORT, () => {
   console.log('Escutando na porta ' + process.env.PORT)
