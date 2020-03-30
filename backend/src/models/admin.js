@@ -26,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Admin.associate = function(models) {
     // associations can be defined here
+    Admin.belongsTo(models.User, {onDelete: 'RESTRICT'})
   };
   return Admin;
 };
