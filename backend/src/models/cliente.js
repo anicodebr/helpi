@@ -7,9 +7,6 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.INTEGER
     },
-    end_id: {
-      type: DataTypes.INTEGER
-    },
     createdAt: {
       allowNull: false,
       type: DataTypes.DATE
