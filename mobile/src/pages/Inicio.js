@@ -1,9 +1,10 @@
 import React, {useContext} from 'react';
 import { StyleSheet, View, Image, Text } from 'react-native';
 import Button from '../components/button';
+import FooterInfo from '../components/footerInfo';
 import {ThemeContext} from '../theme';
 
-function Main(){
+function Inicio({navigation}){
     const theme = useContext(ThemeContext);
     const styles = StyleSheet.create({
         image: {
@@ -24,13 +25,6 @@ function Main(){
             width: '80%',
             marginBottom: '10%'
         },
-        text2:{
-            textAlign: "center",
-            fontSize: theme.font.size.little,
-            width: '100%',
-            position: 'absolute',
-            bottom: 20 
-        },
         button: {
             width: 280, 
             marginBottom: 20,
@@ -49,11 +43,11 @@ function Main(){
             <Image  style={styles.image2} source={require('../assets/Nome.png')} />
             <Text   style={styles.text1}>Tá precisando de uma ajudinha? Pede um helpi!</Text>
             <Button style={styles.button} text="Cadastro"/>
-            <Button style={styles.button} outlined text="Já tenho uma conta"/>
+            <Button style={styles.button} outlined text="Já tenho uma conta" onPress={() => {navigation.navigate('Login1')}}/>
             <Button style={styles.button} outlined text="Quero ajudar!"/>
-            <Text   style={styles.text2}>2020 @ Todos os direitos reservados</Text>
+            <FooterInfo />
         </View>
     )
 }
 
-export default Main
+export default Inicio

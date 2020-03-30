@@ -1,7 +1,8 @@
 import React from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import Main from './pages/Inicio';
+import Inicio from './pages/Inicio';
+import Login1 from './pages/Login1';
 
 const Stack = createStackNavigator();
 
@@ -13,12 +14,18 @@ function Routes(){
             screenOptions={{
                 gestureEnabled: false,
                 headerTintColor: '#FFF',
+                headerShown: false,
             }}
-            headerMode="none">
+            >
                 <Stack.Screen
                     name="Inicio"
-                    component={Main}
-                    options={{ title: 'DevRadar' }}
+                    component={Inicio}
+                    options={{ title: 'Inicio' }}
+                />
+                <Stack.Screen
+                    name="Login1"
+                    component={Login1}
+                    options={{ title: 'Login' }}
                 />
             </Stack.Navigator>
         </NavigationContainer>
