@@ -8,7 +8,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER
     },
     autorizado: {
-      type: DataTypes.BOOLEAN
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
     },
     rg_frente: {
       type: DataTypes.BLOB
