@@ -40,7 +40,7 @@ module.exports = {
                 return res.status(401).json(null); // Caso a senha não bata, retorna não autorizado
             let _user = user.get({plain: true})
             await Acessos.create({ UserId: _user.id }) // Gera contador de acesso no banco de dados
-            Admin.findOne({where: { UserId: _user.id }}) // Verifica se o usuário tentando fazer login é admin mesmo
+            Admin.findOne({where: { id: _user.AdminId }}) // Verifica se o usuário tentando fazer login é admin mesmo
             .then(async admin => {
                 if(!admin)
                     return res.status(401).json(null); //Caso não encontre, significa que não é admin e retorna não autorizado
