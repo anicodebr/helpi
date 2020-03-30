@@ -63,7 +63,7 @@ module.exports = {
     },
     async show(req,res){                                                                                            // Rota para retornar todos os dados de um único usuário representado por <id>
         User.findByPk(req.params.id, { 
-            attributes: [ 'id', 'name', 'email', "dt_nasc", "cpf", "tel", 'foto','createdAt'],                      //campos requeridos
+            attributes: [ 'id', 'name', 'email', "dt_nasc", "cpf", "tel", 'foto','createdAt','updatedAt'],                      //campos requeridos
             include: [Entregador, Cliente]                                                                          //Inclue as dependencias de tabela
         })
         .then(user => {
@@ -131,18 +131,56 @@ module.exports = {
             }
         }).catch(err => { console.error(err); return res.status(500).json(null); })                                 //Catch para dar console no error e retornar um status de erro no servidor sem vazar dados
     },
-    async update(req,res){                                                                                          // Rota para update no usuário dono de respectivo <id>, apenas atualiza o que for enviado. Ainda não se encontra atualizado mas deve ser feito em base ao código do destroy() de verificar existencia e autorizar mudanças.
-        User.findOne({where: {id: req.params.id}}, { attributes: ['name', 'email', 'password', 'dt_nasc', 'cpf', 'tel']})
+    async update(req,res){           
+        let up = false;                                                                               // Rota para update no usuário dono de respectivo <id>, apenas atualiza o que for enviado. Ainda não se encontra atualizado mas deve ser feito em base ao código do destroy() de verificar existencia e autorizar mudanças.
+        User.findByPk(req.params.id)
         .then(async user => {
-            user.name       = req.body.name                             || user.name;
-            user.email      = req.body.email                            || user.email;
-            user.dt_nasc    = req.body.dt_nasc                          || user.dt_nasc;
-            user.cpf        = req.body.cpf                              || user.cpf;
-            user.tel        = req.body.tel                              || user.tel;
-            user.password   = req.body.password? await bcrypt.hash(req.body.password,10):user.password
-            await user.save().then(user => user?
-                res.status(200).json(null):
-                res.status(401).json(null))
+            user.name       = req.body.name         || user.name;
+            user.password   = req.body.password?await bcrypt.hash(req.body.password,10):user.password;
+            user.dt_nasc    = req.body.dt_nasc      || user.dt_nasc;
+            user.tel        = req.body.tel          || user.tel;
+            user.foto       = req.body.foto         || user.foto;
+            await user.update()
+            .then(async user => {
+                if(user.ClienteId){
+                    up = await Cliente.findByPk(user.ClienteId)
+                    .then(async cliente => {
+                        cliente.update();
+                        return up = await Endereco.findByPk(cliente.EnderecoId)
+                        .then(async endereco => {
+                            endereco.endereco    = req.body.endereco     || endereco.endereco;
+                            endereco.numero      = req.body.numero       || endereco.numero;
+                            endereco.cep         = req.body.cep          || endereco.cep;
+                            endereco.referencia  = req.body.referencia   || endereco.referencia;
+                            endereco.complemento = req.body.complemento  || endereco.complemento;
+                            endereco.uf          = req.body.uf           || endereco.uf;
+                            endereco.bairro      = req.body.bairro       || endereco.bairro;
+                            endereco.cidade      = req.body.cidade       || endereco.cidade;
+                            endereco.pais        = req.body.pais         || endereco.pais;
+                            return await endereco.update().then(() => {
+                                return true;
+                            })
+                        })                  
+                    })  
+                }
+                if(user.EntregadorId){
+                    up = await Entregador.findByPk(entregador.EntregadorId)
+                    .then(async entregador => {
+                        entregador.rg_frente = req.body.rg_frente || entregador.rg_frente;
+                        entregador.rg_tras   = req.body.rg_tras   || entregador.rg_tras;
+                        entregador.descricao = req.body.descricao || entregador.descricao;
+                        return await entregador.update().then(() => {
+                            return true;
+                        })
+                    })
+                }
+                if(user.AdminId){
+
+                }
+                if(up){
+                    res.status(200).json(null)
+                }
+            })
         })
     },
     async destroy(req,res){                                                                                         // Rota para destruir todos os dados relacionados a determinado usuário
