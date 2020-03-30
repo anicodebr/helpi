@@ -7,7 +7,7 @@ routes.post('/users', UserController.store); //Rota para registro de usuário co
 routes.post('/admin/auth', UserController.authAdmin); // Rota para login de Administradores
 routes.post('/admin/create', UserController.storeAdmin); // Rota para Criação de Administradores
 
-routes.use(authMiddleware); // Middleware JWT para verificação do TOKEN 
+// routes.use(authMiddleware); // Middleware JWT para verificação do TOKEN 
 
 routes.get('/users', UserController.index); // Rota para retornar todos os usuários.
 routes.get('/users/:id', UserController.show); // Rota para retornar todos os dados de um único usuário representado por <id>
