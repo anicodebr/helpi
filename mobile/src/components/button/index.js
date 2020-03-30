@@ -10,40 +10,37 @@ function Button(props){
         button: {
             alignContent: "center",
             justifyContent: "center",
-            elevation: 3,
+            elevation: theme.style.elevation,
             backgroundColor: theme.color.primary,
             borderRadius: 50,
-            width: '100%',
-            height: '100%'
         },
         buttonO: {
             alignContent: "center",
             justifyContent: "center",
-            elevation: 3,
+            elevation: theme.style.elevation,
             backgroundColor: theme.color.background,
             borderStyle: "solid",
             borderWidth: 4,
             borderRadius: 50,
             borderColor: theme.color.primary,
-            height: '100%'
         },
         text: {
             padding: 15,
             color: theme.font.color.secondary,
-            fontSize: 20,
+            fontSize: theme.font.size.h3,
             textAlign: 'center'
         },
         textO: {
             padding: 15,
             color: theme.font.color.primary,
-            fontSize: 20,
+            fontSize: theme.font.size.h3,
             textAlign: 'center'
         }
     })
 
     return (
     <View style={props.style}>
-        <TouchableOpacity style={props.outlined ? styles.buttonO : styles.button} >
+        <TouchableOpacity style={props.outlined ? styles.buttonO : styles.button} onPress={props.onPress}>
             <Text style={props.outlined ? styles.textO : styles.text}>{props.text}</Text>
         </TouchableOpacity>
     </View>
