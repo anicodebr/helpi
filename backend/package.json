@@ -7,6 +7,7 @@
     "start": "nodemon ./src/index.js",
     "mkm": "npx makemigration --name",
     "migrate": "sequelize db:migrate",
+    "env": "node ./lib/create.env.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -25,6 +26,8 @@
     "sequelize-cli": "^5.5.1"
   },
   "devDependencies": {
+    "cmdify": "^0.0.4",
+    "inquirer": "^7.1.0",
     "nodemon": "^2.0.2"
   }
 }
