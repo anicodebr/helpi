@@ -7,9 +7,6 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.INTEGER
     },
-    end_id: {
-      type: DataTypes.INTEGER
-    },
     createdAt: {
       allowNull: false,
       type: DataTypes.DATE
@@ -21,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Cliente.associate = function(models) {
     // associations can be defined here
+    Cliente.belongsTo(models.Endereco, {onDelete: 'RESTRICT'})
   };
   return Cliente;
 };

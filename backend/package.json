@@ -7,6 +7,7 @@
     "start": "nodemon ./src/index.js",
     "mkm": "npx makemigration --name",
     "migrate": "sequelize db:migrate",
+    "env": "node ./lib/create.env.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -22,9 +23,12 @@
     "mysql2": "^2.1.0",
     "sequelize": "^5.21.5",
     "sequelize-auto-migrations-up2date": "^1.0.6",
-    "sequelize-cli": "^5.5.1"
+    "sequelize-cli": "^5.5.1",
+    "socket.io": "^2.3.0"
   },
   "devDependencies": {
+    "cmdify": "^0.0.4",
+    "inquirer": "^7.1.0",
     "nodemon": "^2.0.2"
   }
 }
