@@ -58,7 +58,7 @@ io.on('connection',function(socket){
 
 app.listen(process.env.PORT, () => {
   console.log('Backend na porta ' + process.env.PORT)
-  socket.listen(3001,() => {
-    console.log('Socket na porta 3001')
+  socket.listen(3002,() => {
+    console.log('Socket na porta 3002')
   })
 });

@@ -49,7 +49,6 @@ module.exports = (sequelize, DataTypes) => {
   
   Endereco.associate = function(models) {
     // associations can be defined here
-    Endereco.hasMany(models.Cliente, {onDelete: 'RESTRICT'});
     Endereco.hasMany(models.Pedido,  {onDelete: 'RESTRICT'});
   };
   return Endereco;

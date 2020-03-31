@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Cliente.associate = function(models) {
     // associations can be defined here
+    Cliente.belongsTo(models.Endereco, {onDelete: 'RESTRICT'})
   };
   return Cliente;
 };

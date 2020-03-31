@@ -55,7 +55,12 @@ module.exports = {
     async index(req,res){                                                                                           // Rota para retornar todos os usuários.
         User.findAll({ 
             attributes: [ 'id', 'name', 'email', "dt_nasc", "cpf", "tel", 'foto','createdAt'],                      //campos requeridos
-            include: [Entregador, Cliente]                                                                          //Inclue as dependencias de tabela
+            include: [ Entregador, Admin,
+                {
+                    model: Cliente,
+                    include: [ Endereco ]
+                }
+            ]                                                                          //Inclue as dependencias de tabela
         }) 
         .then(users => {
             return res.status(200).json(users);                                                                     //Caso ok, retorna 'ok'
@@ -135,32 +140,40 @@ module.exports = {
         let up = false;                                                                               // Rota para update no usuário dono de respectivo <id>, apenas atualiza o que for enviado. Ainda não se encontra atualizado mas deve ser feito em base ao código do destroy() de verificar existencia e autorizar mudanças.
         User.findByPk(req.params.id)
         .then(async user => {
-            user.name       = req.body.name         || user.name;
+            user.name       = req.body.name                 || user.name;
             user.password   = req.body.password?await bcrypt.hash(req.body.password,10):user.password;
-            user.dt_nasc    = req.body.dt_nasc      || user.dt_nasc;
-            user.tel        = req.body.tel          || user.tel;
-            user.foto       = req.body.foto         || user.foto;
+            user.dt_nasc    = new Date(req.body.dt_nasc)    || user.dt_nasc;
+            user.tel        = req.body.tel                  || user.tel;
+            user.foto       = req.body.foto                 || user.foto;
             await user.update()
+            .then(async user => {
+                if(!user.ClienteId && !user.EnderecoId){
+                    return res.status(200).json(null)
+                }
+                return user
+            })
             .then(async user => {
                 if(user.ClienteId){
                     up = await Cliente.findByPk(user.ClienteId)
                     .then(async cliente => {
-                        cliente.update();
-                        return up = await Endereco.findByPk(cliente.EnderecoId)
-                        .then(async endereco => {
-                            endereco.endereco    = req.body.endereco     || endereco.endereco;
-                            endereco.numero      = req.body.numero       || endereco.numero;
-                            endereco.cep         = req.body.cep          || endereco.cep;
-                            endereco.referencia  = req.body.referencia   || endereco.referencia;
-                            endereco.complemento = req.body.complemento  || endereco.complemento;
-                            endereco.uf          = req.body.uf           || endereco.uf;
-                            endereco.bairro      = req.body.bairro       || endereco.bairro;
-                            endereco.cidade      = req.body.cidade       || endereco.cidade;
-                            endereco.pais        = req.body.pais         || endereco.pais;
-                            return await endereco.update().then(() => {
-                                return true;
-                            })
-                        })                  
+                        return await cliente.update().then(async cliente => {
+                            return await Endereco.findByPk(cliente.EnderecoId)
+                            .then(async endereco => {
+                                endereco.endereco    = req.body.endereco     || endereco.endereco;
+                                endereco.numero      = req.body.numero       || endereco.numero;
+                                endereco.cep         = req.body.cep          || endereco.cep;
+                                endereco.referencia  = req.body.referencia   || endereco.referencia;
+                                endereco.complemento = req.body.complemento  || endereco.complemento;
+                                endereco.uf          = req.body.uf           || endereco.uf;
+                                endereco.bairro      = req.body.bairro       || endereco.bairro;
+                                endereco.cidade      = req.body.cidade       || endereco.cidade;
+                                endereco.pais        = req.body.pais         || endereco.pais;
+                                return await endereco.save()
+                                .then(async endereco => {
+                                    return true;
+                                })
+                            })            
+                        })      
                     })  
                 }
                 if(user.EntregadorId){
@@ -169,7 +182,7 @@ module.exports = {
                         entregador.rg_frente = req.body.rg_frente || entregador.rg_frente;
                         entregador.rg_tras   = req.body.rg_tras   || entregador.rg_tras;
                         entregador.descricao = req.body.descricao || entregador.descricao;
-                        return await entregador.update().then(() => {
+                        return up = await entregador.update().then(() => {
                             return true;
                         })
                     })
