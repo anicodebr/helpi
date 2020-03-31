@@ -54,13 +54,7 @@ module.exports = {
     },
     async index(req,res){                                                                                           // Rota para retornar todos os usuários.
         User.findAll({ 
-            attributes: [ 'id', 'name', 'email', "dt_nasc", "cpf", "tel", 'foto','createdAt'],                      //campos requeridos
-            include: [ Entregador, Admin,
-                {
-                    model: Cliente,
-                    include: [ Endereco ]
-                }
-            ]                                                                          //Inclue as dependencias de tabela
+            attributes: [ 'id', 'name', 'email','createdAt']                     //campos requeridos                                                                        //Inclue as dependencias de tabela
         }) 
         .then(users => {
             return res.status(200).json(users);                                                                     //Caso ok, retorna 'ok'
