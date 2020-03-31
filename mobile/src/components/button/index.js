@@ -1,6 +1,7 @@
 import React, {useContext} from 'react'
 import { TouchableOpacity, StyleSheet, Text, View } from 'react-native'
 import {ThemeContext} from '../../theme';
+import PropTypes from 'prop-types';
 
 function Button(props){
 
@@ -13,6 +14,8 @@ function Button(props){
             elevation: theme.style.elevation,
             backgroundColor: theme.color.primary,
             borderRadius: 50,
+            height: '100%',
+            width: '100%',
         },
         buttonO: {
             alignContent: "center",
@@ -23,6 +26,8 @@ function Button(props){
             borderWidth: 4,
             borderRadius: 50,
             borderColor: theme.color.primary,
+            height: '100%',
+            width: '100%',
         },
         text: {
             padding: 15,
@@ -45,6 +50,10 @@ function Button(props){
         </TouchableOpacity>
     </View>
     )
+}
+
+Button.propTypes = {
+    text: PropTypes.string,
 }
 
 export default Button
