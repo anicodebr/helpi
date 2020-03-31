@@ -40,6 +40,6 @@ IconButton.defaultProps = {
 
 IconButton.propTypes = {
     textProp: PropTypes.string,
-  }
+}
 
 export default IconButton

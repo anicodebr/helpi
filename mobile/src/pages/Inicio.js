@@ -35,16 +35,14 @@ function Inicio({navigation}){
             backgroundColor: theme.color.background,
             alignItems: 'center',
         },
-    })
+    });
 
     return (
         <View style={styles.container}>
             <Image  style={styles.image} source={require('../assets/Logo.png')} />
             <Image  style={styles.image2} source={require('../assets/Nome.png')} />
             <Text   style={styles.text1}>Tá precisando de uma ajudinha? Pede um helpi!</Text>
-            <Button style={styles.button} text="Cadastro"/>
-            <Button style={styles.button} outlined text="Já tenho uma conta" onPress={() => {navigation.navigate('Login1')}}/>
-            <Button style={styles.button} outlined text="Quero ajudar!"/>
+            <Button style={styles.button} text="Entrar" onPress={() => {navigation.navigate('Login1')}}/>
             <FooterInfo />
         </View>
     )

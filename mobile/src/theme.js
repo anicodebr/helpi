@@ -7,7 +7,8 @@ const theme = {
       },
       color:{
         background: '#FFF',
-        primary: '#66BB6A'
+        primary: '#66BB6A',
+        grey: "#BDBDBD"
       },
       font:{
         type:{
@@ -23,6 +24,7 @@ const theme = {
         size:{
           h1: 40,
           h2: 30,
+          h2_5: 25,
           h3: 20,
           little: 13,
         }
