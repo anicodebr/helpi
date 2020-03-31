@@ -26,6 +26,7 @@ axios.defaults.baseURL = api;
 
 export const userActions = {
   login,
+  listUsers,
   updateUser,
   logout
 }
@@ -68,6 +69,38 @@ function login(data) {
   }
   function failure(error) {
     return { type: userConstants.LOGIN_FAILURE, error }
+  }
+}
+
+function listUsers(data) {
+  setToken();
+  return dispatch => {
+    dispatch(request())
+    alertActions.request('Getting users...')
+    axios
+      .get('/users')
+      .then(
+        response => {
+          dispatch(success(response.data.users))
+        },
+        err => {
+          alertActions.error('Error! Contact support!')
+          dispatch(failure(err))
+        }
+      )
+      .catch(err => {
+        console.log(err)
+      })
+  }
+
+  function request(user) {
+    return { type: userConstants.LISTUSER_REQUEST, user }
+  }
+  function success(users) {
+    return { type: userConstants.LISTUSER_SUCCESS, users }
+  }
+  function failure(error) {
+    return { type: userConstants.LISTUSER_FAILURE, error }
   }
 }
 

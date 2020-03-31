@@ -231,9 +231,7 @@ export default function MiniDrawer({...props}) {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbarHead} />
-        <div className={classes.children}>
           {props.children}
-        </div>
       </main>
     </div>
   );
