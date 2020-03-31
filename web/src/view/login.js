@@ -3,10 +3,11 @@ import React, { Component } from 'react';
 import { 
     Grid, Paper, Typography, TextField, Box, Button
 } from '@material-ui/core';
-import PassField from '../components/InputPass'
+import PassField from '../components/InputPass';
+import BackDrop from '../components/BackDrop';
 
 // import { history } from '../redux/_helpers'
-import { alertActions } from '../redux/_actions';
+import { alertActions, userActions } from '../redux/_actions';
 import { withStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux';
@@ -49,8 +50,8 @@ class Login extends Component {
         super(props);
 
         this.state = {
-            user: "",
-            pass: ""
+            email: "",
+            password: ""
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -66,18 +67,18 @@ class Login extends Component {
 
     handleSubmit(e){
         e.preventDefault();
-        if(this.state.pass && this.state.pass){
-            if(this.state.pass){
-                if(this.state.user){
-                    
+        if(this.state.password && this.state.email){
+            if(this.state.password){
+                if(this.state.email){
+                    this.props.login({email: this.state.email, password: this.state.password})
                 }else{
-                    alertActions.error('Missing User Name!');
+                    alertActions.error('Missing Email!');
                 }
             }else{
                 alertActions.error('Missing Password!');
             }
         }else{
-            alertActions.error('Missing Password and User Name!');
+            alertActions.error('Missing Password and Email!');
         }
     }
 
@@ -87,13 +88,14 @@ class Login extends Component {
     }
 
     render() { 
-        const { classes } = this.props;
-        const { pass, user } = this.state;
+        const { classes, submitted } = this.props;
+        const { password, email } = this.state;
         return (
             <div className={classes.root}>
+                <BackDrop open={submitted} />
                 <Grid container direction="column" justify="center" align='center' alignItems="center" className={classes.fh} >
                     <Grid item xs={12} className={classes.center}>
-                        <Paper className={classes.paperR}>
+                        <Paper className={classes.paperR} elevation={10} >
                             <form onSubmit={this.handleSubmit} >
                                 <Box p={1}>
                                     <Typography variant="h4" component="h2">
@@ -101,10 +103,10 @@ class Login extends Component {
                                     </Typography>
                                 </Box>
                                 <Box p={1}>
-                                    <TextField onChange={this.handleChange} className={classes.text} fullWidth value={user} label="User Name" name='user' variant="filled" />
+                                    <TextField onChange={this.handleChange} className={classes.text} fullWidth value={email} label="Email" name='email' variant="filled" />
                                 </Box>
                                 <Box p={1}>
-                                    <PassField onChange={this.handleChange} className={classes.text} fullWidth value={pass} label="Password " name='pass' variant="filled" />
+                                    <PassField onChange={this.handleChange} className={classes.text} fullWidth value={password} label="Password " name='password' variant="filled" />
                                 </Box>
                                 <Box p={1} pb={2}>
                                     <Button type="submit" className={classes.button} variant="contained" color='primary' >
@@ -121,11 +123,12 @@ class Login extends Component {
 }
 
 function mapState(state) {
-    const { loggedIn } = state.authentication
-    return { loggedIn };
+    const { loggedIn, submitted } = state.authentication
+    return { loggedIn, submitted };
 }
 
 const actionCreators = {
+    login: userActions.login
 };
 
 export default withRouter(connect(mapState, actionCreators)(withStyles(styles, { withTheme: true })(Login)));

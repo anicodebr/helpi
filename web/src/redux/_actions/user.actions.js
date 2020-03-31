@@ -4,6 +4,7 @@ import axios from 'axios'
 import { userConstants } from '../_constants'
 import { alertActions } from './';
 import { history } from '../_helpers'
+import * as routes from '../../utils/routes.json'
 
 function setToken() {
   const token = localStorage.getItem('token')
@@ -16,7 +17,7 @@ function setToken() {
 
 let api = "/api";
 if (process.env.NODE_ENV !== "production") {
-  api = "http://localhost:8000/api";
+  api = "http://localhost:3001/api";
 }
 
 axios.defaults.baseURL = api;
@@ -37,20 +38,20 @@ function login(data) {
     dispatch(request(data.username))
     alertActions.request('Logando...')
     axios
-      .post('/obtain-auth-token/', data)
+      .post('/admin/auth', data)
       .then(
         response => {
           setTimeout(() => {
-            localStorage.setItem('username', data.username)
-            localStorage.setItem('id', data.id)
+            localStorage.setItem('name', response.data.name)
+            localStorage.setItem('id', response.data.id)
             localStorage.setItem('token', response.data.token)
             alertActions.success('Logado! Redirecionando...')
             dispatch(success('Sucesso!'))
-            history.push('/home')
+            history.push(routes.dash.route)
           }, 1000)
         },
         err => {
-          dispatch(failure(err))
+          alertActions.error('Wrong email or password!')
           dispatch(failure(err))
         }
       )
@@ -105,7 +106,7 @@ function updateUser(data) {
 
 function logout() {
   //calling logout service
-  localStorage.removeItem('username')
+  localStorage.removeItem('name')
   localStorage.removeItem('token')
   localStorage.removeItem('id')
 
