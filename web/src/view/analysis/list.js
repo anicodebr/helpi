@@ -4,7 +4,7 @@ import { Box } from "@material-ui/core";
 import BackDrop from "../../components/BackDrop";
 
 import { history } from '../../redux/_helpers';
-import { userActions } from '../../redux/_actions';
+import { entregadorActions } from '../../redux/_actions';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Grid } from "@material-ui/core";
@@ -14,7 +14,7 @@ class UsersList extends Component {
     constructor(props) {
         super(props);
 
-        this.props.listUsers();
+        this.props.listEntregador();
 
     }
 
@@ -62,12 +62,12 @@ class UsersList extends Component {
 
 function mapState(state) {
     const { loggedIn } = state.authentication
-    const { users, submitted } = state.userInfo
+    const { users, submitted } = state.listEntregador
     return { loggedIn, users, submitted };
 }
 
 const actionCreators = {
-    listUsers: userActions.listUsers
+    listEntregador: entregadorActions.listEntregador
 };
 
 export default withRouter(connect(mapState, actionCreators)(UsersList));
