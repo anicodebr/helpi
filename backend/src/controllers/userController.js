@@ -52,20 +52,14 @@ module.exports = {
             }).catch(err => { console.error(err); return res.status(500).json(null); })                             //Catch para dar console no error e retornar um status de erro no servidor sem vazar dados
         }).catch(err => { console.error(err); return res.status(500).json(null); })                                 //Catch para dar console no error e retornar um status de erro no servidor sem vazar dados
     },
-    // async index(req,res){                                                                                           // Rota para retornar todos os usuários.
-    //     User.findAll({ 
-    //         attributes: [ 'id', 'name', 'email','createdAt'],
-    //         include:{
-    //             model: Entregador,
-    //             attributes: [],                      ~~~~~~~~RETIRADO TEMPORÁRIAMENTE~~~~~~~~
-    //             where: {autorizado: false}
-    //         },
-    //         where:{ AdminId: null, ClienteId: null},                                                                                     //campos requeridos                                                                        //Inclue as dependencias de tabela
-    //     }) 
-    //     .then(users => {
-    //         return res.status(200).json({users: users});                                                                     //Caso ok, retorna 'ok'
-    //     }).catch(err => { console.error(err); return res.status(500).json(null); })                                 //Catch para dar console no error e retornar um status de erro no servidor sem vazar dados
-    // },
+    async index(req,res){                                                                                           // Rota para retornar todos os usuários.
+        User.findAll({ 
+            attributes: [ 'id', 'name', 'email','createdAt'],                    
+        }) 
+        .then(users => {
+            return res.status(200).json({users: users});                                                                     //Caso ok, retorna 'ok'
+        }).catch(err => { console.error(err); return res.status(500).json(null); })                                 //Catch para dar console no error e retornar um status de erro no servidor sem vazar dados
+    },
     async show(req,res){                                                                                            // Rota para retornar todos os dados de um único usuário representado por <id>
         User.findByPk(req.params.id, { 
             attributes: [ 'id', 'name', 'email', "dt_nasc", "cpf", "tel", 'foto','createdAt','updatedAt'],                      //campos requeridos
