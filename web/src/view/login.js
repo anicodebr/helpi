@@ -9,7 +9,7 @@ import BackDrop from '../components/BackDrop';
 // import { history } from '../redux/_helpers'
 import { alertActions, userActions } from '../redux/_actions';
 import { withStyles } from '@material-ui/core/styles';
-import { withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 const styles = theme => ({

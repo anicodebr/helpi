@@ -30,7 +30,7 @@ class UsersList extends Component {
         return (
             <>
             <BackDrop open={submitted} />
-            <Box style={{ width: "100%", height: "100%" }} display='flex' alignItems="center" justifyContent="center">
+            <Box style={{ height: "100%" }} display='flex' alignItems="center" justifyContent="center">
                 <Grid container direction="row" justify="center" alignItems="center">
                     <Grid item xs={12} md={10} sm={12}>
                         <MaterialTable
