@@ -1,0 +1,7 @@
+export const entregadorConstants = {
+    
+    LISTUSER_REQUEST: 'LISTUSER_REQUEST',
+    LISTUSER_SUCCESS: 'LISTUSER_SUCCESS',
+    LISTUSER_FAILURE: 'LISTUSER_FAILURE',
+
+};
