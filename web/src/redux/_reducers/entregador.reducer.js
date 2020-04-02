@@ -6,13 +6,22 @@ const initialState = user ? { loggedIn: true, user } : {};
 
 export function listEntregador(state = initialState, action) {
   switch (action.type) {
-    case entregadorConstants.LISTUSER_REQUEST:
+    case entregadorConstants.LIST_ENTREGADOR_REQUEST:
       return {
         submitted: true
       };
-    case entregadorConstants.LISTUSER_SUCCESS:
+    case entregadorConstants.LIST_ENTREGADOR_SUCCESS:
     return {users: action.users};
-    case entregadorConstants.LISTUSER_FAILURE:
+    case entregadorConstants.LIST_ENTREGADOR_FAILURE:
+      return {};
+      
+    case entregadorConstants.GET_ENTREGADOR_REQUEST:
+      return {
+        submitted: true
+      };
+    case entregadorConstants.GET_ENTREGADOR_SUCCESS:
+    return {entregador: action.entregador};
+    case entregadorConstants.GET_ENTREGADOR_FAILURE:
       return {};
     default:
       return state
