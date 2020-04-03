@@ -11,6 +11,7 @@ app.use(cors());
 
 //Rotas do sistema
 app.use("/api", require("./routes/user"))
+app.use("/api/entregador", require("./routes/entregador"))
 app.use("/api/report", require("./routes/report"))
 
 // let connectedUsers = {};

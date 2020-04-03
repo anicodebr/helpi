@@ -4,6 +4,7 @@ import axios from 'axios'
 import { userConstants } from '../_constants'
 import { alertActions } from './';
 import { history } from '../_helpers'
+import * as routes from '../../utils/routes.json'
 
 function setToken() {
   const token = localStorage.getItem('token')
@@ -16,7 +17,7 @@ function setToken() {
 
 let api = "/api";
 if (process.env.NODE_ENV !== "production") {
-  api = "http://localhost:8000/api";
+  api = "http://localhost:3001/api";
 }
 
 axios.defaults.baseURL = api;
@@ -25,6 +26,7 @@ axios.defaults.baseURL = api;
 
 export const userActions = {
   login,
+  listUsers,
   updateUser,
   logout
 }
@@ -37,20 +39,20 @@ function login(data) {
     dispatch(request(data.username))
     alertActions.request('Logando...')
     axios
-      .post('/obtain-auth-token/', data)
+      .post('/admin/auth', data)
       .then(
         response => {
           setTimeout(() => {
-            localStorage.setItem('username', data.username)
-            localStorage.setItem('id', data.id)
+            localStorage.setItem('name', response.data.name)
+            localStorage.setItem('id', response.data.id)
             localStorage.setItem('token', response.data.token)
             alertActions.success('Logado! Redirecionando...')
             dispatch(success('Sucesso!'))
-            history.push('/home')
+            history.push(routes.dash.route)
           }, 1000)
         },
         err => {
-          dispatch(failure(err))
+          alertActions.error('Wrong email or password!')
           dispatch(failure(err))
         }
       )
@@ -67,6 +69,38 @@ function login(data) {
   }
   function failure(error) {
     return { type: userConstants.LOGIN_FAILURE, error }
+  }
+}
+
+function listUsers(data) {
+  setToken();
+  return dispatch => {
+    dispatch(request())
+    alertActions.request('Getting users...')
+    axios
+      .get('/users')
+      .then(
+        response => {
+          dispatch(success(response.data.users))
+        },
+        err => {
+          alertActions.error('Error! Contact support!')
+          dispatch(failure(err))
+        }
+      )
+      .catch(err => {
+        console.log(err)
+      })
+  }
+
+  function request(user) {
+    return { type: userConstants.LISTUSER_REQUEST, user }
+  }
+  function success(users) {
+    return { type: userConstants.LISTUSER_SUCCESS, users }
+  }
+  function failure(error) {
+    return { type: userConstants.LISTUSER_FAILURE, error }
   }
 }
 
@@ -105,7 +139,7 @@ function updateUser(data) {
 
 function logout() {
   //calling logout service
-  localStorage.removeItem('username')
+  localStorage.removeItem('name')
   localStorage.removeItem('token')
   localStorage.removeItem('id')
 

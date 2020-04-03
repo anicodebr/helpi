@@ -1,15 +1,22 @@
 import React, { Component } from 'react';
 
-// import { history } from '../../redux/_helpers'
-import { withRouter } from 'react-router-dom'
+import { Box } from "@material-ui/core";
+import BackDrop from "../../components/BackDrop";
+
+import { history } from '../../redux/_helpers';
+import { entregadorActions } from '../../redux/_actions';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Grid } from "@material-ui/core"
-import MaterialTable from 'material-table'
+import { Grid } from "@material-ui/core";
+import MaterialTable from 'material-table';
 
 class UsersList extends Component {
-    // constructor(props) {
-    //     super(props);
-    // }
+    constructor(props) {
+        super(props);
+
+        this.props.listEntregador();
+
+    }
 
     // componentDidMount(){
     //     if(!this.props.loggedIn){
@@ -19,58 +26,35 @@ class UsersList extends Component {
     // }
 
     render() { 
+        const { submitted, users } = this.props
         return (
             <>
+            <BackDrop open={submitted} />
+            <Box style={{ height: "100%" }} display='flex' alignItems="center" justifyContent="center">
                 <Grid container direction="row" justify="center" alignItems="center">
                     <Grid item xs={12} md={10} sm={12}>
                         <MaterialTable
                             columns={[
                                 { title: 'Nome', field: 'name' },
-                                { title: 'Sobre Nome', field: 'surname' },
-                                { title: 'Ano de Nascimento', field: 'birthYear', type: 'numeric' },
-                                { title: 'Cidade de nascimento', field: 'birthCity', lookup: { 34: 'İstanbul', 63: 'Şanlıurfa' } }
+                                { title: 'Email', field: 'email' },
+                                { 
+                                    title: 'Ano de Nascimento', 
+                                    field: 'createdAt', 
+                                    customSort: (a,b) => (new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()),
+                                    render: rowData => <>{(new Date(rowData.createdAt).toLocaleString())}</>
+                                }
                             ]}
                             options={{
                                 toolbar: false,
-                                pageSize: 8
+                                pageSize: 8,
+                                pageSizeOptions: 8
                             }}
-                            onRowClick={((evt, selectedRow) => console.log(selectedRow))}
-                            data={[
-                                { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-                                { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-                                { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-                                { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-                                { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-                                { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-                                { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-                                { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-                                { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-                                { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-                                { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-                                { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-                                { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-                                { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-                                { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-                                { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-                                { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-                                { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-                                { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-                                { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-                                { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-                                { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-                                { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-                                { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-                                { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-                                { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-                                { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-                                { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-                                { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-                                { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-                                { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 }
-                            ]}
+                            onRowClick={((evt, selectedRow) => history.push(`/analysis/user/${selectedRow.id}`))}
+                            data={users}
                             />
                     </Grid>
                 </Grid>
+            </Box>
             </>
         );
     }
@@ -78,10 +62,12 @@ class UsersList extends Component {
 
 function mapState(state) {
     const { loggedIn } = state.authentication
-    return { loggedIn };
+    const { users, submitted } = state.listEntregador
+    return { loggedIn, users, submitted };
 }
 
 const actionCreators = {
+    listEntregador: entregadorActions.listEntregador
 };
 
 export default withRouter(connect(mapState, actionCreators)(UsersList));

@@ -73,12 +73,13 @@ const useStyles = makeStyles(theme => ({
     },
   },
   toolbar: {
+    minHeight: toolbarHeight,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',
     padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
-    ...theme.mixins.toolbar,
+    // ...theme.mixins.toolbar,
   },
   content: {
     flexGrow: 1,
@@ -230,9 +231,7 @@ export default function MiniDrawer({...props}) {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbarHead} />
-        <div className={classes.children}>
           {props.children}
-        </div>
       </main>
     </div>
   );

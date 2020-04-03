@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import "react-toastify/dist/ReactToastify.css";
+import CloseIcon from '@material-ui/icons/Close';
 
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import { ToastContainer } from "react-toastify";
@@ -45,7 +46,7 @@ class App extends Component {
                   <LayoutRoute restricted={false} title={routes.analysis.title} component={UsersList} path={routes.analysis.route} exact />
                   <LayoutRoute restricted={false} title={routes.analysis.user.title} component={UserDatails} path={routes.analysis.user.route + "/:id"} exact />
                 </Router>
-                <ToastContainer autoClose={3000} />
+                <ToastContainer autoClose={3000} closeButton={<CloseIcon />} />
               </MuiThemeProvider>
             </ThemeProvider>
             </>

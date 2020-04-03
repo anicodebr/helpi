@@ -54,10 +54,10 @@ module.exports = {
     },
     async index(req,res){                                                                                           // Rota para retornar todos os usuários.
         User.findAll({ 
-            attributes: [ 'id', 'name', 'email','createdAt']                     //campos requeridos                                                                        //Inclue as dependencias de tabela
+            attributes: [ 'id', 'name', 'email','createdAt'],                    
         }) 
         .then(users => {
-            return res.status(200).json(users);                                                                     //Caso ok, retorna 'ok'
+            return res.status(200).json({users: users});                                                                     //Caso ok, retorna 'ok'
         }).catch(err => { console.error(err); return res.status(500).json(null); })                                 //Catch para dar console no error e retornar um status de erro no servidor sem vazar dados
     },
     async show(req,res){                                                                                            // Rota para retornar todos os dados de um único usuário representado por <id>
