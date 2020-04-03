@@ -7,7 +7,7 @@ function InputText(props){
     const styles = StyleSheet.create({
         input:{
             borderStyle: "solid",
-            borderBottomWidth: 2,
+            borderBottomWidth: props.greyed ? 0 : 2,
             borderColor: theme.color.primary,
             fontSize: theme.font.size.h3,
             color: theme.font.color.primary,
@@ -16,9 +16,7 @@ function InputText(props){
         }
     })
     return (
-        <View style={props.style}>
-            <TextInput style={styles.input} placeholder={props.placeHolder}/>
-        </View>
+            <TextInput style={[styles.input, props.style]} placeholder={props.placeHolder} onChangeText={props.onChangeText}/>
     )
 }
 
