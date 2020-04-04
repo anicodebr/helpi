@@ -1,5 +1,5 @@
 import React, {useContext} from 'react'
-import { TextInput, StyleSheet, View } from 'react-native'
+import { TextInput, StyleSheet } from 'react-native'
 import { ThemeContext } from '../../theme'
 
 function InputText(props){
@@ -10,13 +10,13 @@ function InputText(props){
             borderBottomWidth: props.greyed ? 0 : 2,
             borderColor: theme.color.primary,
             fontSize: theme.font.size.h3,
-            color: theme.font.color.primary,
+            color:  theme.font.color.primary,
             paddingBottom: 10,
             paddingHorizontal: 20
         }
     })
     return (
-            <TextInput style={[styles.input, props.style]} placeholder={props.placeHolder} onChangeText={props.onChangeText}/>
+            <TextInput {...props} style={[styles.input, props.style]} placeholder={props.placeHolder}/>
     )
 }
 
