@@ -6,7 +6,6 @@ import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { ThemeContext } from '../theme';
 import Button from '../components/button';
 import FooterInfo from '../components/footerInfo';
-import InputText from '../components/inputText';
 
 
 function Login3({navigation}) {

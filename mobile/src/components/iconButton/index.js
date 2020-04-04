@@ -27,7 +27,7 @@ function IconButton(props){
     return (
         <View style={props.style || styles.default}>
             <TouchableOpacity style={styles.button} onPress={props.onPress}>
-                <Icon name="keyboard-arrow-left" size={props.size} color={theme.font.color.secondary}/>
+                <Icon name={props.iconName} size={props.size} color={theme.font.color.secondary}/>
                 <Text style={styles.text}>{props.text}</Text>
             </TouchableOpacity>
         </View>
@@ -36,10 +36,12 @@ function IconButton(props){
 
 IconButton.defaultProps = {
     size: 60,
+    iconName: "keyboard-arrow-left"
 }
 
 IconButton.propTypes = {
     textProp: PropTypes.string,
+    iconName: PropTypes.string
 }
 
 export default IconButton

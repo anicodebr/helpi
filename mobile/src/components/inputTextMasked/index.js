@@ -1,8 +1,9 @@
 import React, {useContext} from 'react'
-import { TextInput, StyleSheet } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { ThemeContext } from '../../theme'
+import { TextInputMask } from 'react-native-masked-text'
 
-function InputText(props){
+function InputTextMasked(props){
     const theme = useContext(ThemeContext);
     const styles = StyleSheet.create({
         input:{
@@ -10,16 +11,20 @@ function InputText(props){
             borderBottomWidth: props.greyed ? 0 : 2,
             borderColor: theme.color.primary,
             fontSize: theme.font.size.h3,
-            color:  theme.font.color.primary,
+            color: theme.font.color.primary,
             paddingBottom: 10,
             paddingHorizontal: 20
         }
     })
     return (
-            <TextInput {...props} style={[styles.input, props.style]} placeholder={props.placeHolder}/>
+            <TextInputMask 
+                {...props}
+                style={[styles.input, props.style]} 
+                placeholder={props.placeHolder}
+            />
     )
 }
 
-export default InputText
+export default InputTextMasked
 
 
