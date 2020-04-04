@@ -5,8 +5,8 @@ const io = require('socket.io')(socket);
 const cors = require('cors');
 require('dotenv').config(); 
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({limit: '50mb', extended: false }));
+app.use(bodyParser.json({limit: '50mb'}));
 app.use(cors());
 
 //Rotas do sistema
@@ -56,7 +56,6 @@ io.on('connection',function(socket){
       console.log(`${socket.username} desconnected`)
     })
 });
-
 app.listen(process.env.PORT, () => {
   console.log('Backend na porta ' + process.env.PORT)
   socket.listen(3002,() => {

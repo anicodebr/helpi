@@ -6,6 +6,25 @@ import { alertActions } from './';
 // import { history } from '../_helpers'
 // import * as routes from '../../utils/routes.json'
 
+function arrayBufferToString(buffer){
+
+  var bufView = new Uint16Array(buffer);
+  var length = bufView.length;
+  var result = '';
+  var addition = Math.pow(2,16)-1;
+
+  for(var i = 0;i<length;i+=addition){
+
+      if(i + addition > length){
+          addition = length - i;
+      }
+      result += String.fromCharCode.apply(null, bufView.subarray(i,i+addition));
+  }
+
+  return result;
+
+}
+
 function setToken() {
   const token = localStorage.getItem('token')
   if (token) {
@@ -71,7 +90,19 @@ function getEntregador(id) {
       .get(`/entregador/${id}`)
       .then(
         response => {
-          dispatch(success(response.data))
+          let foto = arrayBufferToString(response.data.foto.data)
+          let rg_frente = arrayBufferToString(response.data.Entregador.rg_frente.data)
+          let rg_tras = arrayBufferToString(response.data.Entregador.rg_tras.data)
+          dispatch(success({
+            ...response.data,
+            foto: `${foto}`,
+            dt_nasc: new Date(response.data.dt_nasc.replace(/-/g, '/')).toLocaleDateString('pt-BR'),
+            Entregador:{
+              ...response.data.Entregador,
+              rg_frente: rg_frente,
+              rg_tras: rg_tras
+            }
+          }))
         },
         err => {
           alertActions.error('Error! Contate o Suporte!')
