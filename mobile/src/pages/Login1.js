@@ -62,7 +62,7 @@ function Login1({navigation}) {
                 <Text   style={styles.text1}>Login</Text>
                 <Text   style={styles.text2}>É bom te ver por aqui novamente!</Text>
                 <InputText style={styles.edit} placeHolder="E-mail ou CPF"/>
-                <InputText style={styles.edit} placeHolder="Senha"/>
+                <InputText style={styles.edit} secureTextEntry={true} placeHolder="Senha"/>
                 <Button style={styles.button1} text="Login"/>
                 <Button style={styles.button2} outlined text="Cadastrar" onPress={() => navigation.navigate('Login3')}/>
                 <Button style={styles.button2} outlined text="Esqueci minha senha" onPress={() => navigation.navigate('Login2')}/>
